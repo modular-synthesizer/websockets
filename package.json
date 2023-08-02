@@ -1,0 +1,41 @@
+{
+  "name": "synple-ws",
+  "version": "0.1.0",
+  "description": "The websocket service for the synple project",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/modular-synthesizer/websockets.git"
+  },
+  "keywords": [
+    "websockets",
+    "modular",
+    "synthesis",
+    "synthesizer",
+    "music",
+    "MAO",
+    "micro-service"
+  ],
+  "author": "Vincent Courtois",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/modular-synthesizer/websockets/issues"
+  },
+  "homepage": "https://github.com/modular-synthesizer/websockets#readme",
+  "devDependencies": {
+    "@types/node": "^20.4.5",
+    "@types/ws": "^8.5.5",
+    "axios": "^1.4.0",
+    "express": "^4.18.2",
+    "typescript": "^5.1.6",
+    "ws": "^8.13.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "querystring": "^0.2.1"
+  }
+}
