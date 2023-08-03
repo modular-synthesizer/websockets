@@ -3,7 +3,7 @@
 import 'dotenv/config'
 import { WebSocketServer } from 'ws';
 import querystring from './utils/querystring.js';
-import api from './utils/api.js';
+import sessionFetch from './api/sessionFetch.js';
 import handleConnection from './handlers/handleConnection.js'
 import express from 'express';
 
@@ -19,7 +19,7 @@ server.on('upgrade', (request, socket, head) => {
   wss.handleUpgrade(request, socket, head, async s => {
     try {
       const params = querystring(request.url);
-      const session = await api.getSession(params.auth_token);
+      const session = await sessionFetch(params.auth_token);
       wss.emit('connection', s, request, session);
     }
     catch(exception) {

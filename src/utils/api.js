@@ -1,6 +1,5 @@
 import axios from 'axios';
 import * as https from "https";
-import SynpleError from '../exceptions/SynpleError.js'
 
 export class Api {
   constructor() {
@@ -18,18 +17,15 @@ export class Api {
   }
 
   async get(url, params = {}) {
-    const config = { url: `${this.baseUrl}${url}`, method: 'get', params, headers: this.headers };
-    return (await this.instance(config)).data;
-  }
-
-  async getSession(id) {
-    if (!id) throw new SynpleError(1008, 'auth_token.required');
     try {
-      return await this.get(`/sessions/${id}`, { auth_token: id });
+      const config = { url: `${this.baseUrl}${url}`, method: 'get', params, headers: this.headers };
+      return (await this.instance(config)).data;
     }
     catch (exception) {
-      const error = exception.response.data;
-      throw new SynpleError(1008, `${error.key}.${error.message}`);
+      if (error.response) {
+        const { key, message } = exception.response.data;
+        throw new SynpleError(1008, `${key}.${message}`);
+      }
     }
   }
 }
