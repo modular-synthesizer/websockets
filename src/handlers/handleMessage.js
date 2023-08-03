@@ -1,4 +1,4 @@
-import parameterEditStart from "./messages/parameterEditStart.js";
+import synthesizerMessage from "./messages/handleSynthesizerMessage.js";
 
 /**
  * Handler for the reception of a message in the websocket.
@@ -7,6 +7,8 @@ import parameterEditStart from "./messages/parameterEditStart.js";
 export default async function handleMessage(message, session) {
   switch(message.type) {
     case 'parameterEditStart':
-      await parameterEditStart(message, session)
+    case 'parameterEditEnd':
+      await synthesizerMessage(message, session);
+      break;
   }
 }
