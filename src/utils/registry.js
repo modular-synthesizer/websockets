@@ -22,7 +22,6 @@ export class Registry {
   forward(message, accounts, session) {
     accounts.forEach(account => {
       if (this.accounts[account]) {
-        console.log('Forwarding messages to ' + account)
         const acc = this.accounts[account];
         Object.keys(acc).forEach(token => {
           if (token !== session.token) acc[token].send(JSON.stringify(message));
