@@ -5,9 +5,10 @@ import synthesizerMessage from "./messages/handleSynthesizerMessage.js";
  * @param {Object} data the JSON object of the message sent in the websocket.
  */
 export default async function handleMessage(message, session) {
-  switch(message.type) {
-    case 'parameterEditStart':
-    case 'parameterEditEnd':
+  required({ 'resource': message.resource, 'operation': message.operation });
+  
+  switch(message.resource) {
+    case 'synthesizer':
       await synthesizerMessage(message, session);
       break;
   }
