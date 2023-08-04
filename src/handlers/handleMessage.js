@@ -1,4 +1,5 @@
 import synthesizerMessage from "./messages/handleSynthesizerMessage.js";
+import required from '../validators/required.js';
 
 /**
  * Handler for the reception of a message in the websocket.

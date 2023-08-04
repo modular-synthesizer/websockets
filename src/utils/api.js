@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as https from "https";
+import 'dotenv/config';
 
 export class Api {
   constructor() {
@@ -17,12 +18,19 @@ export class Api {
   }
 
   async get(url, params = {}) {
+    return await this.makeRequest({
+      method: 'get',
+      url: `${this.baseUrl}${url}`,
+      params,
+    });
+  }
+
+  async makeRequest(config) {
     try {
-      const config = { url: `${this.baseUrl}${url}`, method: 'get', params, headers: this.headers };
-      return (await this.instance(config)).data;
+      return (await this.instance({ ...config, headers: this.headers })).data;
     }
     catch (exception) {
-      if (error.response) {
+      if (exception.response) {
         const { key, message } = exception.response.data;
         throw new SynpleError(1008, `${key}.${message}`);
       }
