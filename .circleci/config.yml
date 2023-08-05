@@ -1,0 +1,35 @@
+version: 2.1
+
+commands:
+jobs:
+  docker-job:
+    docker:
+      - image: cimg/node:16.14
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.14
+      - run:
+          name: Authenticate on Docker HUB from environment variable
+          command: echo ${DOCKER_PASSWORD} | docker login --username ${DOCKER_USERNAME} --password-stdin
+      - run:
+          name: Set the version to be used in later steps
+          command: export DATETIME=`date +%Y-%m-%d_%H.%M.%S` && echo "export VERSION=${DATETIME}" >> $BASH_ENV
+      - run:
+          name: Get traces of the deployed version
+          command: echo ${VERSION}
+      - run:
+          name: Build the docker image from the Dockerfile
+          command: docker build -t ${DOCKER_USERNAME}/${DOCKER_REPOSITORY}:${VERSION} -f deployment/Dockerfile .
+      - run:
+          name: Push the image to Docker HUB
+          command: docker push ${DOCKER_USERNAME}/${DOCKER_REPOSITORY}:${VERSION}
+
+workflows:
+  build:
+    jobs:
+      - docker-job:
+          filters:
+            branches:
+              only:
+                - main

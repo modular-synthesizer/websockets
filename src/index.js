@@ -13,7 +13,7 @@ const wss = new WebSocketServer({ noServer: true });
 
 wss.on('connection', handleConnection);
 
-const server = app.listen(8080);
+const server = app.listen(process.env.PORT || 3000);
 
 server.on('upgrade', (request, socket, head) => {
   wss.handleUpgrade(request, socket, head, async s => {
