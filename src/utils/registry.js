@@ -1,13 +1,28 @@
+import { threadId } from "worker_threads";
+
 export class Registry {
   constructor() {
     this.accounts = {};
   }
 
-  addSession(session, socket) {
-    if (!(session.username in this.accounts)) {
-      this.accounts[session.username] = {}
+  addSession({ username, token }, socket) {
+    console.log("adding session");
+    if (!(username in this.accounts)) {
+      this.accounts[username] = {}
     }
-    this.accounts[session.username][session.token] = socket;
+    if (!(token in this.accounts[username])) {
+      this.accounts[username][token] = []
+    }
+    this.accounts[username][token].push(socket);
+  }
+
+  removeSession({ username, token }, socket) {
+    if (username in this.accounts) {
+      if (token in this.accounts[username]) {
+        const idx = this.accounts[username][token].indexOf(socket);
+        this.accounts[username][token].splice(idx, 1);
+      }
+    }
   }
 
   /**
@@ -24,7 +39,9 @@ export class Registry {
       if (this.accounts[account]) {
         const acc = this.accounts[account];
         Object.keys(acc).forEach(token => {
-          if (token !== session.token) acc[token].send(JSON.stringify(message));
+          if (token !== session.token) {
+            acc[token].forEach(socket => socket.send(JSON.stringify(message)));
+          }
         })
       }
     })
